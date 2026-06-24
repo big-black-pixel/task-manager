@@ -1,73 +1,249 @@
-# React + TypeScript + Vite
+# 📋 Task Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Современный менеджер задач на **React 19 + TypeScript + Vite** с архитектурой **Feature-Sliced Design (FSD)**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📦 Стек технологий
 
-## React Compiler
+### Frontend
+- **Vite 8** — сборщик
+- **React 19** — UI библиотека
+- **TypeScript 6** — типизация
+- **SCSS (Sass)** — стилизация
+- **TanStack Query 5** — серверное состояние
+- **Zustand 5** — локальное состояние
+- **React Router 7** — маршрутизация
+- **DnD Kit** — drag-and-drop
+- **Axios** — HTTP клиент
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Backend (в разработке)
+- **NestJS** — Node.js фреймворк
+- **PostgreSQL** — база данных
+- **Prisma** — ORM
+- **Redis** — кэширование
+- **WebSocket** — real-time
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📂 Структура проекта
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+``` FSD
+src/
+├── app/                    # 🎯 ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ
+│   ├── providers/          # Провайдеры (QueryClient, Router)
+│   ├── styles/             # Глобальные стили
+│   └── index.tsx           # Корневой компонент
+│
+├── pages/                  # 📄 СТРАНИЦЫ ПРИЛОЖЕНИЯ
+│   ├── main/               # Главная страница
+│   └── tasks/              # Страница задач
+│
+├── widgets/                # 🧩 САМОДОСТАТОЧНЫЕ БЛОКИ UI
+│   ├── header/             # Шапка сайта
+│   ├── sidebar/            # Боковая панель
+│   └── task-board/         # Доска задач (Kanban)
+│
+├── features/               # ⚡ ФИЧИ (ДЕЙСТВИЯ ПОЛЬЗОВАТЕЛЯ)
+│   ├── task-create/        # Создание задачи
+│   ├── task-edit/          # Редактирование
+│   ├── task-delete/        # Удаление
+│   └── task-drag/          # Drag-and-drop
+│
+├── entities/               # 🎨 БИЗНЕС-СУЩНОСТИ
+│   ├── task/               # Сущность "Задача"
+│   │   ├── model/          # Типы, API, store
+│   │   ├── ui/             # TaskCard компонент
+│   │   └── index.ts        # Публичный API сущности
+│   └── user/               # Сущность "Пользователь"
+│
+└── shared/                 # 🔧 ПЕРЕИСПОЛЬЗУЕМЫЙ КОД
+    ├── api/                # API клиент (axios instance)
+    ├── ui/                 # UI Kit (Button, Input, Modal)
+    ├── lib/                # Утилиты
+    ├── hooks/              # Общие хуки
+    └── types/              # Общие типы
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🧭 Правила импортов (FSD)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Слои могут импортировать только из нижних слоёв:
+
 ```
+app → pages → widgets → features → entities → shared
+```
+
+### ✅ Правильно:
+
+```typescript
+// pages/tasks/ui/TasksPage.tsx
+import { TaskCard } from '@/entities/task'
+import { TaskBoard } from '@/widgets/task-board'
+```
+
+### ❌ Неправильно:
+
+```typescript
+// entities/task/ui/TaskCard.tsx
+import { TasksPage } from '@/pages/tasks' // ❌ Нельзя!
+```
+
+---
+
+## 📝 Примеры кода
+
+### Entity (типы)
+
+```typescript
+// src/entities/task/model/types.ts
+export type TaskPriority = 'low' | 'medium' | 'high'
+export type TaskStatus = 'todo' | 'in-progress' | 'done'
+
+export interface Task {
+  id: string
+  title: string
+  description?: string
+  status: TaskStatus
+  priority: TaskPriority
+  dueDate?: string
+  createdAt: string
+  updatedAt: string
+}
+```
+
+### Entity (публичный API)
+
+```typescript
+// src/entities/task/index.ts
+export type { Task, TaskPriority, TaskStatus } from './model/types'
+```
+
+### Shared (API)
+
+```typescript
+// src/shared/api/taskApi.ts
+import type { Task, CreateTaskDTO } from '@/entities/task'
+
+export const taskApi = {
+  getAll: async (): Promise<Task[]> => {
+    // Временные моки, потом заменим на axios.get('/api/tasks')
+    return []
+  },
+  create: async (dto: CreateTaskDTO): Promise<Task> => {
+    // Временные моки, потом заменим на axios.post('/api/tasks', dto)
+    return {} as Task
+  }
+}
+```
+
+### Feature (хук)
+
+```typescript
+// src/features/task-create/model/useCreateTask.ts
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { taskApi } from '@/shared/api/taskApi'
+import type { CreateTaskDTO } from '@/entities/task'
+
+export const useCreateTask = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (dto: CreateTaskDTO) => taskApi.create(dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] })
+    }
+  })
+}
+```
+
+### Page (страница)
+
+```typescript
+// src/pages/tasks/ui/TasksPage.tsx
+import { useQuery } from '@tanstack/react-query'
+import { taskApi } from '@/shared/api/taskApi'
+import { TaskBoard } from '@/widgets/task-board'
+
+export const TasksPage = () => {
+  const { data: tasks, isLoading } = useQuery({
+    queryKey: ['tasks'],
+    queryFn: taskApi.getAll
+  })
+
+  if (isLoading) return <div>Загрузка...</div>
+  return <TaskBoard tasks={tasks || []} />
+}
+```
+
+---
+
+## 🚀 Команды
+
+```bash
+npm install          # Установка зависимостей
+npm run dev          # Запуск dev сервера (http://localhost:5173)
+npm run build        # Сборка продакшена
+npm run preview      # Предпросмотр продакшен сборки
+npm run lint         # Линтинг кода
+```
+
+---
+
+## 🌿 Git workflow
+
+### Структура веток
+
+```
+main                    ← Стабильная версия (продакшен)
+  └── develop           ← Основная ветка разработки
+       ├── feature/task-drag
+       ├── feature/dark-theme
+       └── fix/api-error
+```
+
+### Команды
+
+```bash
+# Создать ветку для фичи
+git checkout -b feature/task-create
+
+# Коммит (Conventional Commits)
+git commit -m "feat(task): add create task form"
+git commit -m "fix(api): correct task update endpoint"
+git commit -m "style(header): update navigation"
+git commit -m "refactor(entities): extract validation"
+
+# Отправка на GitHub
+git push origin feature/task-create
+```
+
+### Типы коммитов
+
+- `feat` — новая фича
+- `fix` — исправление ошибки
+- `style` — изменения стилей (без логики)
+- `refactor` — рефакторинг кода
+- `docs` — документация
+- `chore` — настройка, конфиги
+
+---
+
+## 📚 Полезные ссылки
+
+- [Feature-Sliced Design](https://feature-sliced.design/)
+- [TanStack Query](https://tanstack.com/query/latest)
+- [Zustand](https://docs.pmnd.rs/zustand)
+- [React Router](https://reactrouter.com/)
+- [DnD Kit](https://dndkit.com/)
+- [NestJS](https://docs.nestjs.com/)
+
+---
+
+## 👨‍💻 Автор
+
+**Магомед** — Frontend Developer
+
+- GitHub: [@big-black-pixel](https://github.com/big-black-pixel)
+- Email: hasamovmohmad@gmail.com
