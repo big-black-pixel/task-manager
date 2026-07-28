@@ -1,11 +1,15 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import LandingPage from '../pages/landing';
 
 const App: React.FC = () => {
   return (
-    <div>
-      <h1>Task Manager - FSD</h1>
-      <p>Feature-Sliced Design initialized</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
