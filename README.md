@@ -28,44 +28,98 @@
 
 ## 📂 Структура проекта
 
-``` FSD
-src/
-├── app/                    # 🎯 ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ
-│   ├── providers/          # Провайдеры (QueryClient, Router)
-│   ├── styles/             # Глобальные стили
-│   └── index.tsx           # Корневой компонент
-│
-├── pages/                  # 📄 СТРАНИЦЫ ПРИЛОЖЕНИЯ
-│   ├── main/               # Главная страница
-│   └── tasks/              # Страница задач
-│
-├── widgets/                # 🧩 САМОДОСТАТОЧНЫЕ БЛОКИ UI
-│   ├── header/             # Шапка сайта
-│   ├── sidebar/            # Боковая панель
-│   └── task-board/         # Доска задач (Kanban)
-│
-├── features/               # ⚡ ФИЧИ (ДЕЙСТВИЯ ПОЛЬЗОВАТЕЛЯ)
-│   ├── task-create/        # Создание задачи
-│   ├── task-edit/          # Редактирование
-│   ├── task-delete/        # Удаление
-│   └── task-drag/          # Drag-and-drop
-│
-├── entities/               # 🎨 БИЗНЕС-СУЩНОСТИ
-│   ├── task/               # Сущность "Задача"
-│   │   ├── model/          # Типы, API, store
-│   │   ├── ui/             # TaskCard компонент
-│   │   └── index.ts        # Публичный API сущности
-│   └── user/               # Сущность "Пользователь"
-│
-└── shared/                 # 🔧 ПЕРЕИСПОЛЬЗУЕМЫЙ КОД
-    ├── api/                # API клиент (axios instance)
-    ├── ui/                 # UI Kit (Button, Input, Modal)
-    ├── lib/                # Утилиты
-    ├── hooks/              # Общие хуки
-    └── types/              # Общие типы
-```
+## 📁 Feature-Sliced Design (FSD)
 
----
+```text
+src/
+├── app/                              # 🎯 Инициализация приложения
+│   ├── providers/                    # Провайдеры приложения
+│   ├── styles/                       # Глобальные стили
+│   └── index.tsx                     # Корневой компонент
+│
+├── pages/                            # 📄 Страницы приложения
+│   ├── landing/                      # Приветственная страница
+│   ├── dashboard/                    # Рабочая область (Task Manager)
+│   ├── login/                        # Авторизация
+│   ├── register/                     # Регистрация
+│   ├── profile/                      # Профиль пользователя
+│   └── not-found/                    # Страница 404
+│
+├── widgets/                          # 🧩 Крупные независимые UI-блоки
+│   ├── header/                       # Верхняя панель
+│   ├── sidebar/                      # Боковая навигация
+│   ├── task-board/                   # Kanban-доска
+│   └── statistics/                   # Статистика
+│
+├── features/                         # ⚡ Пользовательские сценарии
+│   ├── task-create/
+│   │   ├── model/
+│   │   ├── ui/
+│   │   ├── lib/
+│   │   └── index.ts
+│   │
+│   ├── task-edit/
+│   │   ├── model/
+│   │   ├── ui/
+│   │   ├── lib/
+│   │   └── index.ts
+│   │
+│   ├── task-delete/
+│   │   ├── model/
+│   │   ├── ui/
+│   │   ├── lib/
+│   │   └── index.ts
+│   │
+│   └── task-drag/
+│       ├── model/
+│       ├── ui/
+│       ├── lib/
+│       └── index.ts
+│
+├── entities/                         # 📦 Бизнес-сущности
+│   ├── task/
+│   │   ├── api/
+│   │   ├── model/
+│   │   ├── ui/
+│   │   └── index.ts
+│   │
+│   ├── user/
+│   │   ├── api/
+│   │   ├── model/
+│   │   ├── ui/
+│   │   └── index.ts
+│   │
+│   ├── project/
+│   │   ├── api/
+│   │   ├── model/
+│   │   ├── ui/
+│   │   └── index.ts
+│   │
+│   ├── comment/
+│   │   ├── api/
+│   │   ├── model/
+│   │   ├── ui/
+│   │   └── index.ts
+│   │
+│   └── history/
+│       ├── api/
+│       ├── model/
+│       ├── ui/
+│       └── index.ts
+│
+├── shared/                           # 🔧 Общие ресурсы
+│   ├── api/                          # Axios и API-клиенты
+│   ├── assets/                       # Изображения, шрифты, иконки
+│   ├── config/                       # Конфигурация приложения
+│   ├── constants/                    # Константы
+│   ├── hooks/                        # Общие React-хуки
+│   ├── lib/                          # Вспомогательные функции
+│   ├── types/                        # Общие типы TypeScript
+│   ├── ui/                           # Общие UI-компоненты
+│   └── utils/                        # Утилиты
+│
+└── main.tsx                          # Точка входа приложения
+```
 
 ## 🧭 Правила импортов (FSD)
 
