@@ -1,4 +1,6 @@
 import style from "./ProductDemo.module.scss";
+import { CiGrid42  } from "react-icons/ci";
+import { BiLayer, BiMessageDetail } from "react-icons/bi";
 
 const ProductDemo = () => {
     return (
@@ -10,9 +12,9 @@ const ProductDemo = () => {
                     для больших команд
                 </h1>
                 <ul className={style.productToombler}>
-                    <li><img src="" alt="img" /> Управление задачами </li>
-                    <li><img src="" alt="img" /> Мессенджер для работы </li>
-                    <li><img src="" alt="img" /> Простая CRM </li>
+                    <li><CiGrid42  className={style.taskIcon} /> Управление задачами </li>
+                    <li><BiMessageDetail className={style.chatIcon} /> Мессенджер для работы </li>
+                    <li><BiLayer className={style.crmIcon} /> Простая CRM </li>
                 </ul>
                 <div className={style.productDemo__media}>
                     <div><video src="" ></video></div>

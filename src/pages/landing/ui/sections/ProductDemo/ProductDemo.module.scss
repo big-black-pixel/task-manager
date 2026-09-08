@@ -4,11 +4,22 @@
     align-items: center;
     justify-content: center;
 
+    h1 {
+        font-family: "VeranoSansExtraBold", sans-serif;
+        font-size: 4rem;
+        line-height: 4rem;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
     .productToombler {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
+        font-family: "WebHelveticaNeueCyr", Arial, sans-serif;
+        font-weight: 600;
         gap: 15px;
         list-style: none;
         padding: 4px 4px;
@@ -28,6 +39,32 @@
             img{
                 display: flex;
                 margin: 0 5px 0 5px;
+            }
+
+            .taskIcon,
+            .chatIcon,
+            .crmIcon {
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: 4px;
+                color: #fefefe;
+                margin: 0 5px 0 5px;
+            }
+
+            .taskIcon {
+                background: #327ff5;
+            }
+
+            .chatIcon {
+                background: #a67fef;
+                padding: 0.2rem;
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+
+            .crmIcon {
+                background: #fe8f2a;
+                padding: 0.2rem;
             }
         }
     }
